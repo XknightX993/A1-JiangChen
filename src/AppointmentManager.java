@@ -135,6 +135,7 @@ public class AppointmentManager {
         int matchingIndex = -1;
         for (int i = 0; i < appointments.size(); i++) {
             if (appointments.get(i).getPatientPhone().equals(patientPhone)) {
+                // A phone number must identify exactly one booking to cancel safely.
                 if (matchingIndex >= 0) {
                     return "Cancellation failed: this phone number matches multiple appointments.";
                 }
@@ -150,6 +151,7 @@ public class AppointmentManager {
 
     private boolean isScheduledTime(LocalTime time) {
         LocalTime slot = firstTimeSlot;
+        // The configured last time is a valid slot when the interval reaches it.
         while (!slot.isAfter(lastTimeSlot)) {
             if (slot.equals(time)) {
                 return true;
